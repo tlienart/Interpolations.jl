@@ -51,7 +51,7 @@ using Interpolations, Test, LinearAlgebra, Random
     end
 
     # check for case where initial/middle indices are NoInterp but later ones are <:BSpline
-    isdefined(Random, :seed!) ? Random.seed!(1234) : srand(1234) # `srand` was renamed to `seed!`
+    isdefined(Random, :seed!) ? Random.seed!(1234) : Random.seed!(1234) # `srand` was renamed to `seed!`
     z0 = rand(10,10)
     za = copy(z0)
     zb = copy(z0')

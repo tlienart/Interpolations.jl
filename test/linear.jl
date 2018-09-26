@@ -50,7 +50,7 @@ end
 
 module Linear2DTests
 println("Testing Linear interpolation in 2D...")
-using Interpolations, Base.Test
+using Interpolations, Test
 
 f(x,y) = sin(x/10)*cos(y/6)
 

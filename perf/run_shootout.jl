@@ -1,7 +1,7 @@
 import Interpolations, Grid, Dierckx, GridInterpolations, ApproXD
 using PyCall
 @pyimport scipy.interpolate as py
-include(joinpath(JULIA_HOME, "..", "..", "examples", "ndgrid.jl"))
+include(joinpath(Sys.BINDIR, "..", "..", "examples", "ndgrid.jl"))
 
 # For the evaluation points, loop over 2:size(itp,d)-1.
 # Since some interpolants are fast, we must ensure this call is type-stable.
@@ -12,8 +12,8 @@ include(joinpath(JULIA_HOME, "..", "..", "examples", "ndgrid.jl"))
 end
 
 # These have a function-barrier so are less critical
-make_knots(A) = ntuple(d->collect(linspace(1,size(A,d),size(A,d))), ndims(A))
-make_xi(A)    = ntuple(d->collect(linspace(2,size(A,d)-1,size(A,d)-2)), ndims(A))
+make_knots(A) = ntuple(d->collect(range(1, stop=size(A,d), length=size(A,d))), ndims(A))
+make_xi(A)    = ntuple(d->collect(range(2, stop=size(A,d)-1, length=size(A,d)-2)), ndims(A))
 
 ## Interpolations and Grid
 function evaluate_grid(itp::Union{Array,Interpolations.AbstractInterpolation,Grid.InterpGrid}, A)
@@ -95,7 +95,7 @@ function evaluate_grid(grid::ApproXD.Lininterp, A)
     x = Array{eltype(T)}( ndims(A))  # in case T is RGB{Float32}
     s = zero(T) + zero(T)
     vA = vec(A)
-    result = Array{T}(1)
+    result = Array{T}(undef, 1)
     which = [1]
     for I in iterrange(A)
         stuff!(x, I)
